@@ -3,8 +3,8 @@
     "Author": "Siren's Call",
     "Name": "Siren's call Song Request Book",
     "InternalName": "SongbookSync",
-    "AssemblyVersion": "1.3.3.0",
-    "Description": "Connects MidiBard 2 to your song request book. Syncs playback, marks requests played, shows Playing now, and optionally announces titles, artists and request credits in /s. Install only on your lead bard. Requires a hosted songbook and a private pairing key.",
+    "AssemblyVersion": "1.3.4.0",
+    "Description": "Connects MidiBard 2 (standard or Zune Alpha) to your song request book. Syncs playback, marks requests played, shows Playing now, and optionally announces titles, artists and request credits in /s. Install only on your lead bard. Requires a hosted songbook and a private pairing key.",
     "ApplicableVersion": "any",
     "RepoUrl": "https://github.com/vashti1975/Sirens-call-Song-Request-Book",
     "Tags": [
@@ -22,16 +22,16 @@
     "AcceptsFeedback": true,
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.3/SongbookSync.zip",
-    "DownloadLinkUpdate": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.3/SongbookSync.zip",
-    "LastUpdate": 1795209331
+    "DownloadLinkInstall": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.4/SongbookSync.zip",
+    "DownloadLinkUpdate": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.4/SongbookSync.zip",
+    "LastUpdate": 1795640656
   },
   {
     "Author": "Tramatic",
     "Name": "Siren's call Song Request Book",
     "InternalName": "TramaticSync",
-    "AssemblyVersion": "1.3.3.0",
-    "Description": "Connects MidiBard 2 to Siren's call Song Request Book for live Playing now, played labels and optional /s announcements.\n\nSetup:\n1. Install only on your lead bard and keep MidiBard 2 enabled.\n2. Open your songbook's owner page: MidiBard Sync > Setup & connection.\n3. For a new connection, generate a key and paste the full /tramaticsync command into game chat. Existing connections keep their saved key.\n4. Start a new song. Match it in the songbook, or choose Ignore this song to exclude a solo.\n\nConnection help: use Refresh connection in the songbook, then start a new song. Check /tramaticsync status.\n\nAnnouncements: /tramaticsync announcements off or /tramaticsync announcements on. Keep your connection key private.",
+    "AssemblyVersion": "1.3.4.0",
+    "Description": "Connects MidiBard 2 (standard or Zune Alpha) to Siren's call Song Request Book for live Playing now, played labels and optional /s announcements.\n\nSetup:\n1. Install only on your lead bard and keep MidiBard 2 enabled.\n2. Open your songbook's owner page: MidiBard Sync > Setup & connection.\n3. For a new connection, generate a key and paste the full /tramaticsync command into game chat. Existing connections keep their saved key.\n4. Start a new song. Match it in the songbook, or choose Ignore this song to exclude a solo.\n\nConnection help: use Refresh connection in the songbook, then start a new song. Check /tramaticsync status.\n\nAnnouncements: /tramaticsync announcements off or /tramaticsync announcements on. Keep your connection key private.",
     "ApplicableVersion": "any",
     "RepoUrl": "https://github.com/vashti1975/Sirens-call-Song-Request-Book",
     "Tags": [
@@ -49,8 +49,8 @@
     "AcceptsFeedback": true,
     "IsHide": false,
     "IsTestingExclusive": false,
-    "DownloadLinkInstall": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.3/TramaticSync.zip",
-    "DownloadLinkUpdate": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.3/TramaticSync.zip",
-    "LastUpdate": 1795209331
+    "DownloadLinkInstall": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.4/TramaticSync.zip",
+    "DownloadLinkUpdate": "https://github.com/vashti1975/Sirens-call-Song-Request-Book/releases/download/v1.3.4/TramaticSync.zip",
+    "LastUpdate": 1795640656
   }
 ]
