@@ -39,7 +39,9 @@ def prepare_release(repository):
     (output / 'pluginmaster.json').write_text(json.dumps(entries, indent=2)+'\n', encoding='utf-8')
     (output / 'SHA256SUMS.txt').write_text('\n'.join(checksums)+'\n', encoding='utf-8')
     feed = f'https://raw.githubusercontent.com/{repository}/main/pluginmaster.json'
-    notes = f'''Normal Dalamud installation for Siren's call Song Request Book {version}.
+    notes = f'''Siren's call Song Request Book {version}: MidiBard 2 Alpha playback compatibility.
+
+Adds support for Zune's MidiBard 2 Alpha instance playback layout (ZuneBardAlpha 1.15.0.171), while preserving standard MidiBard 2 support. Detects the active command owner on each poll so disabled or reloaded copies cannot mask playback. The status command now shows the detected playback source and version. Existing pairing keys and filename matches remain valid.
 
 Add this URL in /xlsettings > Experimental > Custom Plugin Repositories:
 {feed}
@@ -48,11 +50,11 @@ Then open /xlplugins and install ONE companion on the lead bard:
 - Siren's call Song Request Book (SongbookSync): configurable hosted songbook; /songbooksync HTTPS_URL TOKEN.
 - Siren's call Song Request Book (TramaticSync): compatible with the existing Tramatic installation and saved key; /tramaticsync status.
 
-Before moving from Dev Tools, disable the development copy and remove its Dev Plugin Locations entry. Keep your local configuration. Do not run the development and installed copies together. The Tramatic build retains its internal name and existing connection.json format; no key is shipped in these packages.
+Existing installations keep their saved pairing key and settings. Enable your chosen MidiBard plugin, update one songbook companion on the lead bard, then start a new song. Check /tramaticsync status (or /songbooksync status) for the detected playback source. No new connection key is needed for this update.
 
-Built against Dalamud API 15 with .NET 10. Playback/announcement logic and installer packaging are checked by the build. Live FFXIV operation has not been tested in this environment. Keep the old files until you have verified Playing now, request completion and one /s announcement in game.
+Built against Dalamud API 15 with .NET 10. Tests cover Alpha instance discovery, standard static playback, file matching, song starts and changes, pause/resume, plugin reloads, announcement identity and installer packaging. The Alpha package's playback members were inspected against ZuneBardAlpha 1.15.0.171. Live FFXIV playback and chat delivery still require an in-game check.
 
-Web updates include persistent Ignore this song, Allow matching, same-key Refresh connection, and listener location refresh. The reusable web source starts with an empty catalog and generic appearance. Packages contain only the compiled companion, its matching manifest and AGPL-3.0 license; no songs, private artwork, connection keys, MidiBard DLLs or game libraries.
+Packages contain only the compiled companion, its matching manifest and AGPL-3.0 license; no songs, private artwork, connection keys, MidiBard DLLs or game libraries.
 '''
     (output / 'release-notes.md').write_text(notes, encoding='utf-8')
     print(f'Prepared v{version}: two compiled companions, checksums and a shared installer feed.')

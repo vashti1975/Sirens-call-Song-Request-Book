@@ -1,4 +1,4 @@
-Siren's call Song Request Book 1.3.3
+Siren's call Song Request Book 1.3.4
 
 NORMAL INSTALL
 Add this URL under /xlsettings > Experimental > Custom Plugin Repositories:

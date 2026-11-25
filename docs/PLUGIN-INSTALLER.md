@@ -25,7 +25,7 @@ MidiBard 2 must remain enabled. The website is still the owner/listener interfac
 
 ## Build and releases
 
-Both projects use `Dalamud.NET.Sdk/15.0.0`, .NET 10, and version 1.3.3. The Windows workflow downloads pinned official API 15 libraries, tests playback/announcement logic and installer packaging, and compiles both assemblies. Packaging checks the manifest’s internal name, assembly version and API against its project and only includes the plugin DLL, its generated manifest and AGPL license. No connection settings, keys, songs, private artwork or host libraries are distributed.
+Both projects use `Dalamud.NET.Sdk/15.0.0`, .NET 10, and version 1.3.4. The Windows workflow downloads pinned official API 15 libraries, tests standard and Alpha playback/announcement logic and installer packaging, and compiles both assemblies. Packaging checks the manifest’s internal name, assembly version and API against its project and only includes the plugin DLL, its generated manifest and AGPL license. No connection settings, keys, songs, private artwork or host libraries are distributed.
 
 After successful compilation on main, the workflow publishes a versioned GitHub release and writes its two-entry `pluginmaster.json` to main. Install/update URLs point to the corresponding versioned ZIPs in that release. Failed builds do not update the feed. Existing release tags are not overwritten: increase both projects’ Version and AssemblyVersion for another release. The repository and release downloads must be public for Dalamud to fetch the feed without authentication.
 

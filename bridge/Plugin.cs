@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text.Json;
@@ -32,42 +31,46 @@ public sealed class Plugin : IDalamudPlugin {
  string remoteEventId="";
  string token="",status="Not paired. Use the connection command from your songbook.",eventShowId="";
  bool announcements=true;
- Type? bardType;
+ string playbackSource="Not detected";
  DateTime nextPoll=DateTime.MinValue;
  volatile bool busy;
- const BindingFlags Flags=BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static;
  public Plugin(IDalamudPluginInterface pi,IFramework framework,ICommandManager commands,IChatGui chat,IClientState client) {
   this.pi=pi;this.framework=framework;this.commands=commands;this.chat=chat;this.client=client;
   configPath=Path.Combine(pi.GetPluginConfigDirectory(),"connection.json");
   try{var config=JsonSerializer.Deserialize<Dictionary<string,string>>(File.ReadAllText(configPath));token=config?.GetValueOrDefault("token")??"";Endpoint=config?.GetValueOrDefault("endpoint")??Endpoint;announcements=config?.GetValueOrDefault("announcements")!="false";}catch{}
-  FindBard();tracker.Baseline(IsPlaying()?CurrentPlayback():null);
+  Baseline();
   commands.AddHandler(CommandName,new CommandInfo(Command){HelpMessage="Pair with "+CommandName+" HTTPS_URL TOKEN; status; disconnect; announcements on|off"});
   framework.Update+=Update;
  }
  void Save(){Directory.CreateDirectory(Path.GetDirectoryName(configPath)!);File.WriteAllText(configPath,JsonSerializer.Serialize(new Dictionary<string,string>{{"token",token},{"endpoint",Endpoint},{"announcements",announcements?"true":"false"}}));}
- void FindBard(){bardType??=AppDomain.CurrentDomain.GetAssemblies().Select(a=>a.GetType("MidiBard.MidiBard",false)).FirstOrDefault(t=>t!=null);}
- object? CurrentPlayback()=>bardType?.GetProperty("CurrentPlayback",Flags)?.GetValue(null);
- bool IsPlaying()=>bardType?.GetProperty("IsPlaying",Flags)?.GetValue(null) is true;
- double? Position(){var time=bardType?.GetProperty("CurrentPlaybackTime",Flags)?.GetValue(null);return time is TimeSpan span?span.TotalSeconds:null;}
+ MidiBardSnapshot? Playback(){
+  commands.Commands.TryGetValue("/midibard",out var command);
+  if(command==null)commands.Commands.TryGetValue("/mbard",out command);
+  var snapshot=MidiBardReader.Read(command?.Handler);
+  playbackSource=snapshot?.Source??"Not detected. Enable MidiBard 2 or MidiBard 2 Alpha.";
+  return snapshot;
+ }
+ void Baseline(){try{var snapshot=Playback();tracker.Baseline(snapshot?.Playing==true?snapshot.Playback:null);}catch{playbackSource="Playback interface could not be read.";tracker.Baseline(null);}}
  void Command(string command,string args){
   args=args.Trim();
-  if(args=="status"||args==""){chat.Print("["+DisplayName+" v1.3.3] "+status+" Say announcements: "+(announcements?"on":"off"));return;}
+  if(args=="status"||args==""){try{Playback();}catch{playbackSource="Playback interface could not be read.";}chat.Print("["+DisplayName+" v1.3.4] "+status+" Say announcements: "+(announcements?"on":"off")+" Playback source: "+playbackSource);return;}
   if(args=="announcements on"||args=="announcements off"){announcements=args.EndsWith(" on");Save();chat.Print("["+DisplayName+"] Say announcements "+(announcements?"on.":"off."));return;}
-  if(args=="disconnect"){token="";File.Delete(configPath);tracker.Baseline(CurrentPlayback());status="Disconnected.";chat.Print("["+DisplayName+"] "+status);return;}
+  if(args=="disconnect"){token="";File.Delete(configPath);Baseline();status="Disconnected.";chat.Print("["+DisplayName+"] "+status);return;}
 #if TRAMATIC_COMPANION
   if(args.Length==64&&args.All(Uri.IsHexDigit))args=new Uri(Endpoint).GetLeftPart(UriPartial.Authority)+" "+args;
 #endif
   var pair=args.Split(' ',StringSplitOptions.RemoveEmptyEntries);
   if(pair.Length!=2||!Uri.TryCreate(pair[0],UriKind.Absolute,out var target)||target.Scheme!="https"||!string.IsNullOrEmpty(target.UserInfo)||pair[1].Length!=64||!pair[1].All(Uri.IsHexDigit)){chat.Print("["+DisplayName+"] Copy the full connection command from your owner songbook.");return;}
-  Endpoint=new Uri(target.GetLeftPart(UriPartial.Authority)+"/api/midibard").AbsoluteUri;token=pair[1];Save();FindBard();tracker.Baseline(IsPlaying()?CurrentPlayback():null);
+  Endpoint=new Uri(target.GetLeftPart(UriPartial.Authority)+"/api/midibard").AbsoluteUri;token=pair[1];Save();Baseline();
   status="Paired locally. Checking songbook connection…";chat.Print("["+DisplayName+"] "+status);_=Send(null);
  }
  void Update(IFramework f){
   if(DateTime.UtcNow<nextPoll||busy||token.Length==0||Endpoint.Length==0)return;
   nextPoll=DateTime.UtcNow.AddSeconds(2);
   try{
-   FindBard();if(bardType==null){status="Waiting for MidiBard 2.";return;}
-   var update=tracker.Observe(CurrentPlayback(),IsPlaying(),Position(),DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+   var snapshot=Playback();
+   var update=tracker.Observe(snapshot?.Playback,snapshot?.Playing==true,snapshot?.Seconds,DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
+   if(snapshot==null&&update==null){status="Waiting for MidiBard 2. Enable MidiBard 2 or MidiBard 2 Alpha.";return;}
    if(update!=null){if(update.Playing&&remoteEventId!=update.EventId)update=update with{Action="start"};_=Send(update);}
   }catch{status="Unable to read MidiBard 2 playback. Use "+CommandName+" status after reloading both plugins.";}
  }
@@ -92,7 +95,8 @@ public sealed class Plugin : IDalamudPlugin {
    status=update.Playing?(matched?"Playing now: "+update.File:"Song needs matching. Open MidiBard Sync in your songbook."):"Playback paused or stopped.";
    if(update.Playing&&result.RootElement.TryGetProperty("announcement",out var message)&&message.ValueKind==JsonValueKind.String){
     var text=message.GetString();if(!string.IsNullOrWhiteSpace(text))await framework.RunOnFrameworkThread(()=>{
-     if(stop.IsCancellationRequested||token!=activeToken||!announcements||!client.IsLoggedIn||announced.Contains(update.EventId)||!IsPlaying()||!ReferenceEquals(CurrentPlayback(),update.Playback))return;
+     var current=Playback();
+     if(stop.IsCancellationRequested||token!=activeToken||!announcements||!client.IsLoggedIn||announced.Contains(update.EventId)||current?.Playing!=true||!ReferenceEquals(current.Playback,update.Playback))return;
      if(Say(text))announced.Add(update.EventId);
     });
    }

@@ -4,6 +4,8 @@ Install **Siren's call Song Request Book** through the normal Dalamud plugin ins
 
 The companion observes MidiBard 2 playback and sends filenames and playing state to a hosted songbook. It does not replace MidiBard or include its binaries or music. Run one companion on the lead bard. Source and the compiled releases use AGPL-3.0; third-party dependencies keep their own licenses.
 
+Version 1.3.4 supports the standard MidiBard 2 static playback layout and the instance playback layout used by Zune's MidiBard 2 Alpha (verified against `ZuneBardAlpha` 1.15.0.171). It follows the active `/midibard` command owner rather than old assemblies left behind after disabling or reloading a plugin. `/tramaticsync status` (or `/songbooksync status`) includes the detected playback source and version. Keep the MidiBard version you intend to use enabled, update the companion, and start a new song. Your saved connection key and song matches remain in use. Live FFXIV playback still needs an in-game check.
+
 ## Pair once
 
 For the general companion, copy `/songbooksync HTTPS_URL TOKEN` from your own owner page. Its HTTPS songbook origin is configurable and saved with the private key. For the Tramatic companion, `/tramaticsync TOKEN` continues to use the existing endpoint and saved configuration format. Keep the command and connection.json private.

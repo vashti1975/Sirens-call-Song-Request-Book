@@ -1,12 +1,17 @@
 {
   "Author": "Siren's Call",
   "Name": "Siren's call Song Request Book",
-  "Description": "Connects MidiBard 2 to your song request book. Syncs playback, marks requests played, shows Playing now, and optionally announces titles, artists and request credits in /s. Install only on your lead bard. Requires a hosted songbook and a private pairing key.",
+  "Description": "Connects MidiBard 2 (standard or Zune Alpha) to your song request book. Syncs playback, marks requests played, shows Playing now, and optionally announces titles, artists and request credits in /s. Install only on your lead bard. Requires a hosted songbook and a private pairing key.",
   "ApplicableVersion": "any",
   "DalamudApiLevel": 15,
   "Punchline": "Live song status and automatic say announcements.",
   "RepoUrl": "https://github.com/vashti1975/Sirens-call-Song-Request-Book",
-  "Tags": ["bard", "music", "songbook", "requests"],
+  "Tags": [
+    "bard",
+    "music",
+    "songbook",
+    "requests"
+  ],
   "LoadRequiredState": 0,
   "LoadSync": false,
   "CanUnloadAsync": false

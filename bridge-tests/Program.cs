@@ -1,4 +1,5 @@
 using SongbookSync;
+MidiBardReaderTests.Run();
 var internalName=PlaybackDetails.FileName(new InternalPlayback());
 if(internalName!="My Song.mid")throw new Exception("Internal MIDI filename was not detected: "+internalName);
 if(PlaybackDetails.FileName(new DisplayOnly())!="Fallback song")throw new Exception("Display name fallback failed");

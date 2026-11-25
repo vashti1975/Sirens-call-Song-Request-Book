@@ -18,7 +18,7 @@ class PackageTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.manifest = dict(Name="Siren's call Song Request Book", Author="Siren's Call",
                              Description="Test", Punchline="Test", InternalName="SongbookSync",
-                             AssemblyVersion="1.3.3.0", DalamudApiLevel=15)
+                             AssemblyVersion="1.3.4.0", DalamudApiLevel=15)
 
     def archive(self, overrides=None, omit=()):
         data = {"SongbookSync.dll": b"MZsynthetic-test-fixture", "SongbookSync.json": json.dumps(self.manifest),

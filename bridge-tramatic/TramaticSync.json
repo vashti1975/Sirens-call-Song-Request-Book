@@ -1,7 +1,7 @@
 {
   "Author": "Tramatic",
   "Name": "Siren's call Song Request Book",
-  "Description": "Connects MidiBard 2 to Siren's call Song Request Book for live Playing now, played labels and optional /s announcements.\n\nSetup:\n1. Install only on your lead bard and keep MidiBard 2 enabled.\n2. Open your songbook's owner page: MidiBard Sync > Setup & connection.\n3. For a new connection, generate a key and paste the full /tramaticsync command into game chat. Existing connections keep their saved key.\n4. Start a new song. Match it in the songbook, or choose Ignore this song to exclude a solo.\n\nConnection help: use Refresh connection in the songbook, then start a new song. Check /tramaticsync status.\n\nAnnouncements: /tramaticsync announcements off or /tramaticsync announcements on. Keep your connection key private.",
+  "Description": "Connects MidiBard 2 (standard or Zune Alpha) to Siren's call Song Request Book for live Playing now, played labels and optional /s announcements.\n\nSetup:\n1. Install only on your lead bard and keep MidiBard 2 enabled.\n2. Open your songbook's owner page: MidiBard Sync > Setup & connection.\n3. For a new connection, generate a key and paste the full /tramaticsync command into game chat. Existing connections keep their saved key.\n4. Start a new song. Match it in the songbook, or choose Ignore this song to exclude a solo.\n\nConnection help: use Refresh connection in the songbook, then start a new song. Check /tramaticsync status.\n\nAnnouncements: /tramaticsync announcements off or /tramaticsync announcements on. Keep your connection key private.",
   "ApplicableVersion": "any",
   "DalamudApiLevel": 15,
   "Punchline": "Live song status and automatic say announcements.",
